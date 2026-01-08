@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14
+    container_name: omnibus-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: omnibus
+      POSTGRES_PASSWORD: omnibus
+      POSTGRES_DB: omnibus
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: src/OmniBus.API/Dockerfile
+    container_name: omnibus-api
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=omnibus;Username=omnibus;Password=omnibus
+      JWT__Key: "SuperSecretKeyChangeMe123!"
+      JWT__Issuer: "OmniBus"
+      JWT__Audience: "OmniBusUsers"
+    ports:
+      - "5000:5000"
+
+  client:
+    build:
+      context: .
+      dockerfile: src/OmniBus.Client/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:5000/api
+    container_name: omnibus-client
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://api:5000/api
+    ports:
+      - "5173:5173"
+
+volumes:
+  db_data:

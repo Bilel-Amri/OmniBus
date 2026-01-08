@@ -1,0 +1,42 @@
+{
+  \"Logging\": {
+    \"LogLevel\": {
+      \"Default\": \"Information\",
+      \"Microsoft.AspNetCore\": \"Warning\"
+    }
+  },
+  \"AllowedHosts\": \"*\",
+  \"ConnectionStrings\": {
+    \"DefaultConnection\": \"Host=localhost;Database=OmniBusDb;Username=postgres;Password=password\"
+  },
+  \"Jwt\": {
+    \"Key\": \"OmniBusSecureKey2024TunisiaBusServiceApplicationKey12345678901234567890\",
+    \"Issuer\": \"OmniBus\",
+    \"Audience\": \"OmniBusUsers\",
+    \"ExpirationHours\": 24
+  },
+  \"PaymentGateway\": {
+    \"Provider\": \"Mock\", // Use \"Stripe\", \"PayPal\", or \"Mock\" for testing
+    \"Stripe\": {
+      \"PublishableKey\": \"pk_test_your_stripe_publishable_key\",
+      \"SecretKey\": \"sk_test_your_stripe_secret_key\",
+      \"WebhookSecret\": \"whsec_your_webhook_secret\"
+    },
+    \"PayPal\": {
+      \"ClientId\": \"your_paypal_client_id\",
+      \"ClientSecret\": \"your_paypal_client_secret\",
+      \"Mode\": \"sandbox\"
+    }
+  },
+  \"MapProvider\": {
+    \"Provider\": \"OpenStreetMap\", // Use \"GoogleMaps\" or \"OpenStreetMap\"
+    \"ApiKey\": \"\"
+  },
+  \"SeatLockDurationMinutes\": 5,
+  \"BusinessRules\": {
+    \"CancellationDeadlineHours\": 2,
+    \"CancellationFeePercentage\": 10,
+    \"MinTicketPrice\": 1.00,
+    \"MaxTicketPrice\": 500.00
+  }
+}
